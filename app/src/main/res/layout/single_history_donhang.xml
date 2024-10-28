@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/car_background"
+        android:layout_marginBottom="8dp">
+        <TextView
+            android:id="@+id/order_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đơn Hàng #12345"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <TextView
+            android:id="@+id/order_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày: 10 Tháng 10, 2024"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp" />
+
+        <TextView
+            android:id="@+id/order_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trạng Thái: Đã xác nhận"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp" />
+<!--        <TextView-->
+<!--            android:id="@+id/order_ten"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Tên món ăn:"-->
+<!--            android:textSize="14sp"-->
+<!--            android:layout_marginTop="4dp" />-->
+        <TextView
+            android:id="@+id/order_tien"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Thành tiền: 15000 vnd"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp" />
+
+<!--        <Button-->
+<!--            android:id="@+id/btn_view_order_details"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Xem Chi Tiết"-->
+<!--            android:layout_marginTop="8dp" />-->
+
+    </LinearLayout>
+
+</LinearLayout>

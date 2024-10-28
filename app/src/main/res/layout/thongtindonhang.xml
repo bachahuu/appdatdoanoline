@@ -1,0 +1,285 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@color/white">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_marginTop="0dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/border"
+            android:layout_marginBottom="16dp">
+
+            <ImageView
+                android:layout_marginTop="5dp"
+                android:id="@+id/trangchu_activity"
+                android:layout_width="34dp"
+                android:layout_height="35dp"
+                android:layout_gravity="start"
+                android:src="@drawable/baseline_home_24" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Thông tin đơn hàng"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:padding="10dp"
+                android:layout_weight="1" />
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/cart_giohang"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/baseline_shopping_cart_24" />
+
+                <TextView
+                    android:id="@+id/menu_sl"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginEnd="-4dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/badge_background"
+                    android:gravity="center"
+                    android:text="0"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <!-- Giao từ cửa hàng -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giao từ cửa hàng: Ẩm thực Ấn Độ - Cự Lộc - Hà Nội"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:paddingTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Địa chỉ giao hàng -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+            <TextView
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:text="Giao tới:"
+                android:layout_marginEnd="8dp" />
+            <EditText
+                android:id="@+id/diachi_giaohang"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Nhập địa chỉ giao hàng" />
+        </LinearLayout>
+
+        <!-- Thông tin cá nhân -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Họ và Tên (*)"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+            <EditText
+                android:id="@+id/ho"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Họ"
+                android:inputType="textPersonName"
+                android:padding="8dp" />
+            <EditText
+                android:id="@+id/ten"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Tên"
+                android:inputType="textPersonName"
+                android:layout_marginStart="8dp"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <!-- Số điện thoại -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại (*)"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="8dp" />
+
+        <EditText
+            android:id="@+id/sdt_kh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="SĐT"
+            android:inputType="phone"
+            android:padding="8dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Mã giảm giá -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mã giảm giá"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp" />
+
+        <Spinner
+            android:id="@+id/spinner_magiamgia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Tổng đơn hàng -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Tổng đơn hàng :"
+                android:textStyle="bold"
+                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/tongtienhang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100000 VND"
+                android:textSize="16sp"
+                android:gravity="end"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+
+        <!-- Phí giao hàng -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Phí giao hàng :"
+                android:textStyle="bold"
+                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/phigiaohang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50000 VND"
+                android:textSize="16sp"
+                android:gravity="end"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+
+        <!-- Chiết khấu -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Chiết khấu :"
+                android:textStyle="bold"
+                android:layout_weight="1" />
+            <TextView
+                android:id="@+id/chietkhau"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 VND"
+                android:textSize="16sp"
+                android:gravity="end"
+                android:layout_marginEnd="16dp" />
+        </LinearLayout>
+
+        <!-- Thanh toán và tổng cộng -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thanh toán bằng:"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="8dp" />
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/baseline_attach_money_24" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thanh toán khi giao hàng" />
+                </LinearLayout>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/tongtien"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tổng cộng : 150000 VND"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="end" />
+        </LinearLayout>
+
+        <!-- Đặt hàng button -->
+        <Button
+            android:id="@+id/insert_don_hang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đặt hàng"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/design_default_color_primary" />
+
+    </LinearLayout>
+</ScrollView>

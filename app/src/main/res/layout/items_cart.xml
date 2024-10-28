@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="8dp"
+    android:layout_margin="5dp">
+    <!-- Bố cục chính để chứa hình ảnh và thông tin sản phẩm -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:gravity="center_vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <!-- Hình ảnh sản phẩm -->
+        <ImageView
+            android:id="@+id/item_giohang_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/logo" />
+        <!-- Bố cục chứa tên, giá và số lượng sản phẩm -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingStart="10dp"
+            android:gravity="center_vertical">
+            <!-- Tên sản phẩm -->
+            <TextView
+                android:id="@+id/item_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hamburger"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Bố cục cho giá và số lượng sản phẩm -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="10dp">
+
+                <!-- Giá sản phẩm -->
+                <TextView
+                    android:id="@+id/items_gia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="35.000"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/holo_red_light"
+                    android:layout_marginEnd="16dp" />
+
+                <!-- Nút giảm số lượng -->
+                <ImageView
+                    android:id="@+id/items_tru"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/baseline_remove_24"
+                    android:layout_marginEnd="6dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <!-- Số lượng sản phẩm -->
+                <TextView
+                    android:id="@+id/item_soluong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="6dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <!-- Nút tăng số lượng -->
+                <ImageView
+                    android:id="@+id/items_cong"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/baseline_add_24"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

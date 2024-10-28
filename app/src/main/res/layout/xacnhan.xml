@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/icon_home"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/baseline_home_24"
+        android:contentDescription="Home"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp" />
+
+    <ImageView
+        android:id="@+id/success_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:paddingBottom="25dp"
+        android:src="@drawable/baseline_check_circle_24"
+        android:contentDescription="Đặt hàng thành công"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp" />
+
+    <TextView
+        android:id="@+id/order_success_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đơn hàng của bạn đã được đặt thành công!"
+        android:textSize="18sp"
+        android:textColor="#4CAF50"
+        android:layout_below="@id/success_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/order_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Số Đơn Hàng: #12345"
+        android:textSize="16sp"
+        android:layout_below="@id/order_success_message"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Thông báo chờ xác nhận đơn hàng -->
+    <TextView
+        android:id="@+id/wait_for_confirmation_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vui lòng chờ xác nhận đơn hàng từ cửa hàng."
+        android:textSize="16sp"
+        android:textColor="#FF5722"
+        android:layout_below="@id/order_number"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp" />
+</RelativeLayout>

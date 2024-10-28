@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_DonHang"
+        android:title="Đơn hàng"
+        android:icon="@drawable/donhang"/>
+    <item
+        android:id="@+id/nav_GioHang"
+        android:title="Giỏ hàng"
+        android:icon="@drawable/giohang"/>
+    <item
+        android:id="@+id/nav_ThongTin"
+        android:title="Thông tin"
+        android:icon="@drawable/thongtin"/>
+    <item
+        android:id="@+id/nav_CaiDat"
+        android:title="Cài đặt"
+        android:icon="@drawable/round_settings_24"/>
+</menu>

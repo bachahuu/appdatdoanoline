@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!--TẠO THANH CUỘN -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="top">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <EditText
+                android:id="@+id/editTextDateStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ngày bắt đầu (yyyy-mm-dd)" />
+
+
+            <EditText
+                android:id="@+id/editTextDateEnd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ngày kết thúc (yyyy-mm-dd)" />
+
+            <!-- Button for fetching statistics -->
+            <Button
+                android:id="@+id/buttonGetStatistics"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lấy Thống Kê" />
+
+
+            <TextView
+                android:id="@+id/textViewBestSellingItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:paddingTop="16dp"/>
+
+
+            <TextView
+                android:id="@+id/textViewTotalRevenue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:paddingTop="16dp"/>
+        </LinearLayout>
+    </ScrollView>
+    
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBarAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom"
+        android:backgroundTint="#0077B6"
+        tools:ignore="BottomAppBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <!-- Orders -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:id="@+id/img_DonHang"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/baseline_border_color_24"
+                    app:tint="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/txt_DonHang"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Đơn hàng"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+
+            <!-- Menu -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:id="@+id/img_ThucDon"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/baseline_restaurant_menu_24"
+                    app:tint="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/txt_ThucDon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Thực đơn"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+
+            <!-- Discount -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:id="@+id/img_MaGiamGia"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/baseline_discount_24"
+                    app:tint="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/txt_MaGiamGia"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Mã"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+
+            <!-- Statistics -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:id="@+id/img_ThongKe"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/baseline_list_alt_24"
+                    app:tint="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/txt_ThongKe"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Thống kê"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+
+            <!-- Logout -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical"
+                android:paddingTop="10dp">
+
+                <ImageView
+                    android:id="@+id/img_dangxuat"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="4dp"
+                    android:src="@drawable/baseline_follow_the_signs_24"
+                    app:tint="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/txt_dangxuat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Đăng Xuất"
+                    android:textColor="#FFFFFF" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </com.google.android.material.bottomappbar.BottomAppBar>
+
+</FrameLayout>
