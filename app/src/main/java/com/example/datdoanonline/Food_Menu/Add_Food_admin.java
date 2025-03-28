@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -109,10 +110,15 @@ public class Add_Food_admin extends Activity {
 
     // Yêu cầu quyền truy cập bộ nhớ
     private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Yêu cầu quyền nếu chưa được cấp
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES}, 1);
+        // Kiểm tra quyền đọc bộ nhớ cho Android 9 (API 28) trở lên
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
+                // Yêu cầu quyền READ_EXTERNAL_STORAGE thay vì READ_MEDIA_IMAGES
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+            }
         }
     }
 
