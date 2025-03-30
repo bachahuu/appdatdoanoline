@@ -1,6 +1,7 @@
 package com.example.datdoanonline.Adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
 import com.example.datdoanonline.Activity.shopping_cart;
 import com.example.datdoanonline.Domain.DatabaseHelper;
 import com.example.datdoanonline.Domain.items_giohang;
@@ -28,26 +30,27 @@ import java.util.ArrayList;
 public class adapter_giohang extends ArrayAdapter<items_giohang> {
     private shopping_cart main;
     Activity context;
-ArrayList<items_giohang> arr_giohang = null;
-int layout_id;
+    ArrayList<items_giohang> arr_giohang = null;
+    int layout_id;
     private SQLiteDatabase db;
 
     public adapter_giohang(@NonNull Activity context, int resource, ArrayList<items_giohang> arr, shopping_cart main) {
-        super(context, resource,arr);
-        this.context=context;
-        this.layout_id =resource;
-        this.arr_giohang =arr;
+        super(context, resource, arr);
+        this.context = context;
+        this.layout_id = resource;
+        this.arr_giohang = arr;
         this.main = main;
 
-        // Khởi tạo DatabaseHelper và lấy cơ sở dữ liệu ghi
         DatabaseHelper sqlHelper = new DatabaseHelper(context);
         this.db = sqlHelper.getWritableDatabase();
     }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        LayoutInflater inflater =context.getLayoutInflater();
-        convertView = inflater.inflate(layout_id,null);
+        LayoutInflater inflater = context.getLayoutInflater();
+        convertView = inflater.inflate(layout_id, null);
+
         TextView ten_item = convertView.findViewById(R.id.item_name);
         TextView gia_item = convertView.findViewById(R.id.items_gia);
         TextView soluong = convertView.findViewById(R.id.item_soluong);
@@ -56,67 +59,95 @@ int layout_id;
         ImageView congsoluong = convertView.findViewById(R.id.items_cong);
 
         items_giohang line_items = arr_giohang.get(position);
-        ten_item.setText(arr_giohang.get(position).getTenSanPham());
-        // Chuyển đổi giá sản phẩm và số lượng sang chuỗi trước khi gán
-        gia_item.setText(String.valueOf(arr_giohang.get(position).getGiaSanPham()) + " VND");
-        soluong.setText(String.valueOf(arr_giohang.get(position).getSoLuong()));
-        // Hiển thị hình ảnh từ URI
-        String imageUriString = line_items.getHinhAnhSanPham();
-        if (imageUriString != null && !imageUriString.isEmpty()) {
-            Uri imageUri = Uri.parse(imageUriString);
-            try {
-                // Chuyển đổi URI thành Bitmap và hiển thị
-                Bitmap bitmap = BitmapFactory.decodeStream(context.getContentResolver().openInputStream(imageUri));
-                hinhanhsanpham.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-                hinhanhsanpham.setImageResource(R.drawable.baseline_border_color_24); // Hình ảnh mặc định nếu có lỗi
+        ten_item.setText(line_items.getTenSanPham());
+        gia_item.setText(String.format("%,d VND", line_items.getGiaSanPham()));
+        soluong.setText(String.valueOf(line_items.getSoLuong()));
+
+        // Xử lý hiển thị ảnh
+        String imagePath = line_items.getHinhAnhSanPham();
+        if (imagePath != null) {
+            if (imagePath.startsWith("drawable/")) {
+                // Xử lý ảnh từ drawable
+                String drawableName = imagePath.replace("drawable/", "").split("\\.")[0];
+                int resId = context.getResources().getIdentifier(
+                        drawableName,
+                        "drawable",
+                        context.getPackageName()
+                );
+
+                if (resId != 0) {
+                    Glide.with(context)
+                            .load(resId)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .error(R.drawable.ic_launcher_background)
+                            .into(hinhanhsanpham);
+                } else {
+                    hinhanhsanpham.setImageResource(R.drawable.ic_launcher_background);
+                }
+            } else {
+                // Xử lý ảnh từ URI (thiết bị hoặc URL)
+                try {
+                    Uri imageUri = Uri.parse(imagePath);
+                    Glide.with(context)
+                            .load(imageUri)
+                            .placeholder(R.drawable.ic_launcher_background)
+                            .error(R.drawable.ic_launcher_background)
+                            .into(hinhanhsanpham);
+                } catch (Exception e) {
+                    hinhanhsanpham.setImageResource(R.drawable.ic_launcher_background);
+                }
             }
         } else {
-            hinhanhsanpham.setImageResource(R.drawable.baseline_border_color_24); // Hình ảnh mặc định nếu không có URI
+            hinhanhsanpham.setImageResource(R.drawable.ic_launcher_background);
         }
-        trusoluong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (line_items.getSoLuong()>1){
-                    line_items.setSoLuong(line_items.getSoLuong()-1);
-                    soluong.setText(String.valueOf(line_items.getSoLuong()));
-                }else {
-                    if (position >= 0 && position < arr_giohang.size()) {
-                        items_giohang item = arr_giohang.get(position);
-                        int maGioHang = main.getmagiohang();
-                        int maMonAn = item.getMaMonAn();
-                        String deleteQuery = "DELETE FROM GioHang WHERE MaGioHang = " + maGioHang + " AND MaMonAn = " + maMonAn;
-                        try {
-                            db.execSQL(deleteQuery);
-                            arr_giohang.remove(position);
-                            notifyDataSetChanged();
-                            main.capNhatTongTien();
-                            Toast.makeText(context, "Sản phẩm đã được xóa khỏi giỏ hàng", Toast.LENGTH_SHORT).show();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                            Toast.makeText(context, "Không thể xóa sản phẩm. Vui lòng thử lại.", Toast.LENGTH_SHORT).show();
-                        }
-                    } else {
-                        Toast.makeText(context, "Không thể xóa sản phẩm. Vị trí không hợp lệ.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-                notifyDataSetChanged();// Cập nhật lại ListView
-                main.capNhatTongTien();  // Gọi hàm cập nhật tổng tiền
-//                main.capnhatsoluongmathang();  // Gọi hàm cập nhật số lượng trên biểu tượng giỏ hàng
-            }
-        });
 
-        congsoluong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                line_items.setSoLuong(line_items.getSoLuong()+1);
+        // Xử lý nút giảm số lượng
+        trusoluong.setOnClickListener(view -> {
+            if (line_items.getSoLuong() > 1) {
+                line_items.setSoLuong(line_items.getSoLuong() - 1);
                 soluong.setText(String.valueOf(line_items.getSoLuong()));
-                notifyDataSetChanged();
-                main.capNhatTongTien();
+                updateQuantityInDatabase(line_items.getMaMonAn(), line_items.getSoLuong());
+            } else {
+                deleteItem(position, line_items.getMaMonAn());
             }
+            notifyDataSetChanged();
+            main.capNhatTongTien();
         });
-        return  convertView;
 
+        // Xử lý nút tăng số lượng
+        congsoluong.setOnClickListener(view -> {
+            line_items.setSoLuong(line_items.getSoLuong() + 1);
+            soluong.setText(String.valueOf(line_items.getSoLuong()));
+            updateQuantityInDatabase(line_items.getMaMonAn(), line_items.getSoLuong());
+            notifyDataSetChanged();
+            main.capNhatTongTien();
+        });
+
+        return convertView;
+    }
+
+    private void updateQuantityInDatabase(int maMonAn, int newQuantity) {
+        try {
+            String updateQuery = "UPDATE GioHang SET SoLuong = " + newQuantity +
+                    " WHERE MaMonAn = " + maMonAn +
+                    " AND MaNguoiDung = " + main.getManguoidung();
+            db.execSQL(updateQuery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Cập nhật số lượng thất bại", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void deleteItem(int position, int maMonAn) {
+        try {
+            String deleteQuery = "DELETE FROM GioHang WHERE MaMonAn = " + maMonAn +
+                    " AND MaNguoiDung = " + main.getManguoidung();
+            db.execSQL(deleteQuery);
+            arr_giohang.remove(position);
+            Toast.makeText(context, "Đã xóa sản phẩm", Toast.LENGTH_SHORT).show();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Xóa sản phẩm thất bại", Toast.LENGTH_SHORT).show();
+        }
     }
 }

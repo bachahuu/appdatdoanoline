@@ -72,11 +72,37 @@ public class FoodListAdapter extends RecyclerView.Adapter<FoodListAdapter.FoodVi
             tvFoodName.setText(food.getTenMonAn());
             tvFoodDescription.setText(food.getMoTa());
             tvFoodPrice.setText("Giá: " + food.getGia() + " VND");
-            // Sử dụng Glide để tải ảnh từ URI
-            Glide.with(itemView.getContext())
-                    .load(Uri.parse(food.getAnhMinhHoa())) // Chuyển đổi chuỗi thành Uri
-                    .into(img_monan); // Gán vào ImageView
+            String imagePath = food.getAnhMinhHoa();
+            Context context = itemView.getContext();
+            if (imagePath.startsWith("drawable/")) {
+                // ẢNH DRAWABLE
+                String drawableName = imagePath.replace("drawable/", "").split("\\.")[0]; // Bỏ đuôi .jpg/png nếu có
+                int resId = context.getResources().getIdentifier(
+                        drawableName,
+                        "drawable",
+                        context.getPackageName()
+                );
 
+                Glide.with(context)
+                        .load(resId)
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                        .into(img_monan);
+
+            } else {
+                // ẢNH THIẾT BỊ - Xử lý cả Uri content:// và file://
+                try {
+                    Uri uri = Uri.parse(imagePath);
+                    Glide.with(context)
+                            .load(uri)
+                            .placeholder(R.drawable.ic_launcher_foreground)
+                            .error(R.drawable.ic_launcher_foreground)
+                            .into(img_monan);
+                } catch (Exception e) {
+                    Glide.with(context)
+                            .load(R.drawable.ic_launcher_foreground)
+                            .into(img_monan);
+                }
+            }
             itemView.setOnClickListener(v -> {
                 // Gọi listener để xử lý sự kiện nhấp chuột
                 listener.onFoodItemClick(food, false); // Thay đổi thành true  nếu muốn chuyển đến CommentActivity.class

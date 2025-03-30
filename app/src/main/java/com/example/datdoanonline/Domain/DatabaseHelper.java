@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "RestaurantDB";
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 18;
 
     // Bảng NguoiDung
     private static final String TABLE_NGUOIDUNG = "NguoiDung";
@@ -141,6 +141,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_ANH_MINH_HOA + " VARCHAR(255), " +
                 COLUMN_SO_LUONG + " INT NOT NULL CHECK (" + COLUMN_SO_LUONG + " >= 0));";
         db.execSQL(createThucDonTable);
+        // Chèn sẵn 10 món ăn
+        String insertThucDon = "INSERT INTO " + TABLE_THUC_DON + " (" +
+                COLUMN_TEN_MON_AN + ", " + COLUMN_MO_TA + ", " + COLUMN_GIA + ", " + COLUMN_DANH_MUC + ", " +
+                COLUMN_SAO_DANH_GIA + ", " + COLUMN_NANG_LUONG + ", " + COLUMN_THOI_GIAN_LAM + ", " + COLUMN_ANH_MINH_HOA + ", " + COLUMN_SO_LUONG + ") VALUES " +
+                "('Gà sốt mắm ngọt', 'gà ta 100%', 50000, 'Món mặn', 4.5, 350, 15, 'drawable/gatay', 10)," +
+                "('Cheese Pizza', 'ngon nhức nách', 45000, 'Món ăn nhanh', 4.2, 400, 20, 'drawable/pizzacheese', 15)";
+        db.execSQL(insertThucDon);
 //giohang
         String createGioHangTable = "CREATE TABLE " + TABLE_GIO_HANG + " (" +
                 COLUMN_MA_GIO_HANG + " INTEGER PRIMARY KEY AUTOINCREMENT, " +

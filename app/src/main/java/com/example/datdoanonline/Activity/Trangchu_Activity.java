@@ -155,8 +155,18 @@ public class Trangchu_Activity extends AppCompatActivity implements FoodListAdap
             intent.putExtra("foodName", food.getTenMonAn());  // Truyền tên món ăn đúng key
             intent.putExtra("foodPrice", food.getGia());      // Truyền giá món ăn
             intent.putExtra("foodDescription", food.getMoTa());
-            intent.putExtra("foodImage", food.getAnhMinhHoa());  // Tên hình ảnh trong thư mục drawable
             intent.putExtra("maMonAn", maMonAn); // Truyền mã món ăn
+            // Xử lý đặc biệt cho ảnh
+            String imagePath = food.getAnhMinhHoa();
+            if (imagePath.startsWith("drawable/")) {
+                // Nếu là ảnh drawable, truyền nguyên chuỗi
+                intent.putExtra("imageType", "drawable");
+                intent.putExtra("foodImage", imagePath);
+            } else {
+                // Nếu là URI từ thiết bị
+                intent.putExtra("imageType", "uri");
+                intent.putExtra("foodImage", imagePath);
+            }
             startActivity(intent);
         }
     }

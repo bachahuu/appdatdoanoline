@@ -2,6 +2,7 @@ package com.example.datdoanonline.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.datdoanonline.Domain.Menu_Food_Domain;
 import com.example.datdoanonline.R;
 import com.squareup.picasso.Picasso;
@@ -49,10 +51,50 @@ public class Menu_Food_Adapter extends RecyclerView.Adapter<Menu_Food_Adapter.Me
         holder.nangLuongTextView.setText(String.valueOf(foodItem.getNangluong()) + " Kcal");
         holder.thoiGianLamTextView.setText(foodItem.getTime() + " phút");
         holder.soLuongTextView.setText("Còn lại: " + String.valueOf(foodItem.getSl()));
+        // Xử lý load ảnh
+        String imagePath = foodItem.getImg();
 
-        // Sử dụng Picasso để load hình ảnh
-        Picasso.get().load(foodItem.getImg()).into(holder.anhMonAnImageView);
+        if (imagePath != null) {
+            if (imagePath.startsWith("drawable/")) {
+                // Xử lý ảnh từ drawable
+                String drawableName = imagePath.replace("drawable/", "").split("\\.")[0];
+                int resId = holder.itemView.getContext().getResources().getIdentifier(
+                        drawableName,
+                        "drawable",
+                        holder.itemView.getContext().getPackageName()
+                );
 
+                if (resId != 0) {
+                    Glide.with(holder.itemView.getContext())
+                            .load(resId)
+                            .placeholder(R.drawable.ic_launcher_foreground)
+                            .error(R.drawable.ic_launcher_foreground)
+                            .into(holder.anhMonAnImageView);
+                } else {
+                    Glide.with(holder.itemView.getContext())
+                            .load(R.drawable.ic_launcher_foreground)
+                            .into(holder.anhMonAnImageView);
+                }
+            } else {
+                // Xử lý ảnh từ URI (thiết bị)
+                try {
+                    Uri uri = Uri.parse(imagePath);
+                    Glide.with(holder.itemView.getContext())
+                            .load(uri)
+                            .placeholder(R.drawable.ic_launcher_foreground)
+                            .error(R.drawable.ic_launcher_foreground)
+                            .into(holder.anhMonAnImageView);
+                } catch (Exception e) {
+                    Glide.with(holder.itemView.getContext())
+                            .load(R.drawable.ic_launcher_foreground)
+                            .into(holder.anhMonAnImageView);
+                }
+            }
+        } else {
+            Glide.with(holder.itemView.getContext())
+                    .load(R.drawable.ic_launcher_foreground)
+                    .into(holder.anhMonAnImageView);
+        }
         // Thiết lập sự kiện click cho các nút
         holder.btnEdit.setOnClickListener(v -> listener.onEdit(foodItem));
         holder.btnDelete.setOnClickListener(v -> listener.onDelete(foodItem));

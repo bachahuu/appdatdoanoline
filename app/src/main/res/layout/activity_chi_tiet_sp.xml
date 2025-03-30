@@ -10,7 +10,37 @@
         android:background="#1CA955"
         app:title="Chi tiết sản phẩm"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize" />
+        android:layout_height="?attr/actionBarSize">
+
+        <FrameLayout
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/icon_giohang"
+                android:layout_width="35dp"
+                android:layout_height="40dp"
+                android:src="@drawable/baseline_shopping_cart_24" />
+
+            <TextView
+                android:id="@+id/activity_menu_sl"
+                android:layout_width="21dp" 
+            android:layout_height="21dp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="@drawable/badge_background"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="#FF000000"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:includeFontPadding="false"
+            android:padding="2dp"/>
+        </FrameLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:id="@+id/layout1"

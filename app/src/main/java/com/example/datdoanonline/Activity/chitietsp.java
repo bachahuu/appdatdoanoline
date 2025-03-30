@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -31,10 +32,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class chitietsp extends AppCompatActivity {
-    TextView tensp, giasp, motasp, soluong;
+    TextView tensp, giasp, motasp, soluong , SLmathang;
     Button btn_them, btn_cong, btn_tru, btn_send_comment;
     EditText et_comment;
-    ImageView img_hinhanh;
+    ImageView img_hinhanh,icon_cart;
     RecyclerView rv_comments;
     SQLiteDatabase db;
     DatabaseHelper sqlhelper;
@@ -52,20 +53,46 @@ public class chitietsp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chi_tiet_sp);
         initview();
-
+        cap_nhap_mat_hang();
         Intent intent = getIntent();
         String foodName = intent.getStringExtra("foodName");
         foodPrice = intent.getDoubleExtra("foodPrice", 0);
         String foodDescription = intent.getStringExtra("foodDescription");
-        String foodImage = intent.getStringExtra("foodImage");
+        String imageType = getIntent().getStringExtra("imageType");
+        String imagePath = getIntent().getStringExtra("foodImage");
         maMonAn = intent.getIntExtra("maMonAn", 0);
-
         tensp.setText(foodName);
         update_tien();
         giasp.setText("Giá: " + String.valueOf(foodPrice) + " VND");
         motasp.setText(foodDescription);
 
-        Picasso.get().load(foodImage).into(img_hinhanh);
+        if ("drawable".equals(imageType)) {
+            // Xử lý ảnh từ drawable
+            String drawableName = imagePath.replace("drawable/", "").split("\\.")[0];
+            int resId = getResources().getIdentifier(
+                    drawableName,
+                    "drawable",
+                    getPackageName()
+            );
+
+            if (resId != 0) {
+                Picasso.get().load(resId).into(img_hinhanh);
+            } else {
+                Picasso.get().load(R.drawable.ic_launcher_background).into(img_hinhanh);
+            }
+        } else {
+            // Xử lý ảnh từ URI thiết bị
+            try {
+                Uri uri = Uri.parse(imagePath);
+                Picasso.get()
+                        .load(uri)
+                        .placeholder(R.drawable.ic_launcher_background)
+                        .error(R.drawable.ic_launcher_background)
+                        .into(img_hinhanh);
+            } catch (Exception e) {
+                Picasso.get().load(R.drawable.ic_launcher_background).into(img_hinhanh);
+            }
+        }
 
         btn_cong.setOnClickListener(view -> {
             int availableQty = sqlhelper.getAvailableQuantity(maMonAn);
@@ -119,6 +146,27 @@ public class chitietsp extends AppCompatActivity {
                 Toast.makeText(chitietsp.this, "Vui lòng nhập nội dung bình luận.", Toast.LENGTH_SHORT).show();
             }
         });
+        // dieu huong den gio hang
+        icon_cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent it = new Intent(chitietsp.this , shopping_cart.class);
+                startActivity(it);
+            }
+        });
+    }
+
+    private void cap_nhap_mat_hang() {
+        // Lấy SharedPreferences để đọc thông tin người dùng đã đăng nhập
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String username = sharedPreferences.getString("username", null); // Lấy username
+        int Manguoidung = sqlhelper.getusername(username); // Lấy mã người dùng từ username
+
+        // Gọi hàm dem_mat_hang để đếm số lượng mặt hàng trong giỏ hàng
+        int soluong = sqlhelper.dem_mat_hang(Manguoidung);
+
+        // Cập nhật số lượng lên TextView soluongmathang
+        SLmathang.setText(String.valueOf(soluong));
     }
 
     private void showEditCommentDialog(DanhGiaDomain comment) {
@@ -128,9 +176,7 @@ public class chitietsp extends AppCompatActivity {
         View view = getLayoutInflater().inflate(R.layout.dialog_edit_comment, null);
         EditText etEditComment = view.findViewById(R.id.et_edit_comment);
         etEditComment.setText(comment.getNhanXet());
-
         builder.setView(view);
-
         builder.setPositiveButton("Lưu", (dialog, which) -> {
             String updatedCommentText = etEditComment.getText().toString().trim();
             if (!TextUtils.isEmpty(updatedCommentText)) {
@@ -203,6 +249,7 @@ public class chitietsp extends AppCompatActivity {
                         "VALUES (" + MaMonAn + ", " + Manguoidung + ", " + Soluongsanpham + ")");
                 Toast.makeText(chitietsp.this, "Đã thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
             }
+        cap_nhap_mat_hang();
     }
 
 
@@ -218,5 +265,13 @@ public class chitietsp extends AppCompatActivity {
         et_comment = findViewById(R.id.et_comment);
         btn_send_comment = findViewById(R.id.btn_send_comment);
         rv_comments = findViewById(R.id.rv_comments);
+        SLmathang = findViewById(R.id.activity_menu_sl);
+        icon_cart = findViewById(R.id.icon_giohang);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Cập nhật lại số lượng mặt hàng mỗi khi Activity quay lại
+        cap_nhap_mat_hang();
     }
 }
