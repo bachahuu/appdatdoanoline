@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "RestaurantDB";
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 21;
 
     // Bảng NguoiDung
     private static final String TABLE_NGUOIDUNG = "NguoiDung";
@@ -163,13 +163,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_MA_NGUOIDUNG_DH + " INT, " +
                 COLUMN_NGAY_DAT_HANG + " DATETIME NOT NULL, " +
                 COLUMN_TONG_TIEN + " DECIMAL(10, 2) NOT NULL, " +
-                COLUMN_TRANG_THAI + " VARCHAR(20) NOT NULL CHECK (" + COLUMN_TRANG_THAI + " IN ('Chờ xử lý', 'Đang chuẩn bị', 'Đang giao', 'Giao thành công')), " +
+                COLUMN_TRANG_THAI + " VARCHAR(20) NOT NULL CHECK (" + COLUMN_TRANG_THAI + " IN ('Chờ xử lý', 'Đang chuẩn bị', 'Đang giao', 'Giao thành công','Đã Hủy')), " +
                 COLUMN_MA_GIAM_GIA_DH + " VARCHAR(20), " +
                 COLUMN_DIA_CHI_GIAO_HANG + " TEXT, " +
                 COLUMN_THONG_TIN_LIEN_LAC + " TEXT, " +
                 "FOREIGN KEY (" + COLUMN_MA_NGUOIDUNG_DH + ") REFERENCES " + TABLE_NGUOIDUNG + "(" + COLUMN_MA_NGUOIDUNG + "), " +
                 "FOREIGN KEY (" + COLUMN_MA_GIAM_GIA_DH + ") REFERENCES " + TABLE_MA_GIAM_GIA + "(" + COLUMN_MA_GIAM_GIA_MGG + "));";
         db.execSQL(createDonHangTable);
+        // Chèn sẵn 5 đơn hàng
+        String insertDonHang = "INSERT INTO " + TABLE_DON_HANG + " (" +
+                COLUMN_MA_NGUOIDUNG_DH + ", " + COLUMN_NGAY_DAT_HANG + ", " + COLUMN_TONG_TIEN + ", " +
+                COLUMN_TRANG_THAI + ", " + COLUMN_MA_GIAM_GIA_DH + ", " + COLUMN_DIA_CHI_GIAO_HANG + ", " + COLUMN_THONG_TIN_LIEN_LAC + ") VALUES " +
+                "(1, '2025-04-03 10:00:00', 500000, 'Chờ xử lý', 'MGG2024A', '123 Đường A, TP.HCM', '0123456789')," +
+                "(2, '2025-04-02 14:30:00', 750000, 'Đang chuẩn bị', 'MGG2024B', '456 Đường B, Hà Nội', '0987654321')," +
+                "(4, '2025-04-01 09:15:00', 1200000, 'Đang giao', 'MGG2024D', '789 Đường C, Đà Nẵng', '0345678912')," +
+                "(5, '2025-03-31 18:45:00', 900000, 'Giao thành công', NULL, '321 Đường D, Hải Phòng', '0765432109')," +
+                "(2, '2025-03-30 21:10:00', 650000, 'Chờ xử lý', 'MGG2024A', '567 Đường E, Cần Thơ', '0556677889');";
+        db.execSQL(insertDonHang);
 
         // Tạo bảng ChiTietDonHang
         String createChiTietDonHangTable = "CREATE TABLE " + TABLE_CHI_TIET_DON_HANG + " (" +

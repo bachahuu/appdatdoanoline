@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
@@ -26,11 +27,11 @@ public class admin_order extends AppCompatActivity {
     SQLiteDatabase DB;
     DatabaseHelper SQL;
     ListView lv_order;
-    Button btn_capnhat, btn_xoadonhang;
+    Button btn_capnhat, btn_xoadonhang , img_timkiem;
     ArrayList<admin_items_order> list_order;
     adapter_order_admin adapter;
     admin_items_order donhang;
-
+    EditText searchtext;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         SQL = new DatabaseHelper(this);
@@ -38,7 +39,23 @@ public class admin_order extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.admin_order);
         lv_order = findViewById(R.id.listViewOrders);
+        img_timkiem = findViewById(R.id.searchButton);
+        searchtext = findViewById(R.id.searchEditText);
         list_order = new ArrayList<>();
+img_timkiem.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        String searchText = searchtext.getText().toString().trim();
+
+        if (searchText.isEmpty()) {
+            // Nếu ô tìm kiếm trống, hiển thị toàn bộ danh sách
+            refreshListView();
+            return;
+        }
+        // Xử lý tìm kiếm
+        searchOrders(searchText);
+    }
+});
 
         // Truy vấn dữ liệu từ bảng DonHang
         Cursor cur = DB.rawQuery("SELECT * FROM DonHang", null);
@@ -75,12 +92,69 @@ public class admin_order extends AppCompatActivity {
         });
     }
 
+    private void searchOrders(String searchQuery) {
+        list_order.clear();
+
+        // Chuẩn hóa query để tìm kiếm không phân biệt hoa thường
+        String normalizedQuery = searchQuery.toLowerCase(Locale.getDefault()).replace(" ", "");
+
+        // Truy vấn tất cả đơn hàng
+        Cursor cur = DB.rawQuery("SELECT * FROM DonHang", null);
+
+        if (cur.moveToFirst()) {
+            do {
+                int madon = cur.getInt(cur.getColumnIndexOrThrow("MaDonHang"));
+                String maDonDinhDang = "DH" + madon; // Định dạng mã đơn thành DH+MaDonHang
+
+                // Thông tin liên lạc để tìm kiếm như cũ
+                String thongtinlienlac = cur.getString(cur.getColumnIndexOrThrow("ThongTinLienLac"));
+                String normalizedThongTin = thongtinlienlac.toLowerCase(Locale.getDefault());
+
+                // Kiểm tra nếu:
+                // 1. Thông tin liên lạc chứa query
+                // 2. Hoặc mã đơn định dạng chứa query
+                // 3. Hoặc query chứa số của mã đơn hàng
+                if (normalizedThongTin.contains(normalizedQuery) ||
+                        maDonDinhDang.toLowerCase(Locale.getDefault()).contains(normalizedQuery) ||
+                        (normalizedQuery.contains(String.valueOf(madon)))) {
+
+                    int manguoidung = cur.getInt(cur.getColumnIndexOrThrow("MaNguoiDung"));
+                    String ngaydatdon = cur.getString(cur.getColumnIndexOrThrow("NgayDatHang"));
+                    double tongtien = cur.getDouble(cur.getColumnIndexOrThrow("TongTien"));
+                    String trangthai = cur.getString(cur.getColumnIndexOrThrow("TrangThai"));
+                    String magiamgia = cur.getString(cur.getColumnIndexOrThrow("MaGiamGia"));
+                    String diachigiaohang = cur.getString(cur.getColumnIndexOrThrow("DiaChiGiaoHang"));
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                    Date ngaydathang = null;
+                    try {
+                        ngaydathang = sdf.parse(ngaydatdon);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    list_order.add(new admin_items_order(madon, manguoidung, ngaydathang, tongtien,
+                            trangthai, magiamgia, diachigiaohang, thongtinlienlac));
+                }
+            } while (cur.moveToNext());
+        }
+        cur.close();
+
+        adapter.notifyDataSetChanged();
+
+        // Hiển thị thông báo nếu không tìm thấy
+        if (list_order.isEmpty()) {
+            Toast.makeText(this, "Không tìm thấy đơn hàng phù hợp", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     public void showUpdateStatusDialog(admin_items_order order) {
         final String[] cacTrangThaiDonHang = {
                 "Chờ xử lý",
                 "Đang chuẩn bị",
                 "Đang giao",
-                "Giao thành công"
+                "Giao thành công",
+                "Đã Hủy"
         };
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Cập nhật trạng thái");

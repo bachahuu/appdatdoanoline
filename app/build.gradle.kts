@@ -67,6 +67,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation ("androidx.fragment:fragment:1.4.1")
     implementation ("com.squareup.picasso:picasso:2.71828")
+    implementation(libs.androidx.appcompat)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
