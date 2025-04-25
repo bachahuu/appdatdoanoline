@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "RestaurantDB";
-    private static final int DATABASE_VERSION = 21;
+    private static final int DATABASE_VERSION = 22;
 
     // Bảng NguoiDung
     private static final String TABLE_NGUOIDUNG = "NguoiDung";
@@ -178,7 +178,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "(2, '2025-04-02 14:30:00', 750000, 'Đang chuẩn bị', 'MGG2024B', '456 Đường B, Hà Nội', '0987654321')," +
                 "(4, '2025-04-01 09:15:00', 1200000, 'Đang giao', 'MGG2024D', '789 Đường C, Đà Nẵng', '0345678912')," +
                 "(5, '2025-03-31 18:45:00', 900000, 'Giao thành công', NULL, '321 Đường D, Hải Phòng', '0765432109')," +
-                "(2, '2025-03-30 21:10:00', 650000, 'Chờ xử lý', 'MGG2024A', '567 Đường E, Cần Thơ', '0556677889');";
+                "(2, '2025-03-30 21:10:00', 650000, 'Đã Hủy', 'MGG2024A', '567 Đường E, Cần Thơ', '0556677889');";
         db.execSQL(insertDonHang);
 
         // Tạo bảng ChiTietDonHang

@@ -95,29 +95,23 @@ img_timkiem.setOnClickListener(new View.OnClickListener() {
     private void searchOrders(String searchQuery) {
         list_order.clear();
 
-        // Chuẩn hóa query để tìm kiếm không phân biệt hoa thường
-        String normalizedQuery = searchQuery.toLowerCase(Locale.getDefault()).replace(" ", "");
+        String searchLower = searchQuery.toLowerCase(Locale.getDefault());
 
-        // Truy vấn tất cả đơn hàng
         Cursor cur = DB.rawQuery("SELECT * FROM DonHang", null);
 
         if (cur.moveToFirst()) {
             do {
                 int madon = cur.getInt(cur.getColumnIndexOrThrow("MaDonHang"));
-                String maDonDinhDang = "DH" + madon; // Định dạng mã đơn thành DH+MaDonHang
-
-                // Thông tin liên lạc để tìm kiếm như cũ
                 String thongtinlienlac = cur.getString(cur.getColumnIndexOrThrow("ThongTinLienLac"));
-                String normalizedThongTin = thongtinlienlac.toLowerCase(Locale.getDefault());
 
-                // Kiểm tra nếu:
-                // 1. Thông tin liên lạc chứa query
-                // 2. Hoặc mã đơn định dạng chứa query
-                // 3. Hoặc query chứa số của mã đơn hàng
-                if (normalizedThongTin.contains(normalizedQuery) ||
-                        maDonDinhDang.toLowerCase(Locale.getDefault()).contains(normalizedQuery) ||
-                        (normalizedQuery.contains(String.valueOf(madon)))) {
+                String thongtinLower = thongtinlienlac.toLowerCase(Locale.getDefault());
+                String maDonFormatted = ("dh" + madon).toLowerCase();  // VD: dh1
 
+                // Chỉ cho khớp chính xác mã đơn và tìm mờ thông tin liên lạc
+                if (
+                        thongtinLower.contains(searchLower) ||   // tìm thông tin liên lạc
+                                maDonFormatted.equals(searchLower)       // chỉ đúng DHx mới khớp
+                ) {
                     int manguoidung = cur.getInt(cur.getColumnIndexOrThrow("MaNguoiDung"));
                     String ngaydatdon = cur.getString(cur.getColumnIndexOrThrow("NgayDatHang"));
                     double tongtien = cur.getDouble(cur.getColumnIndexOrThrow("TongTien"));
@@ -133,20 +127,21 @@ img_timkiem.setOnClickListener(new View.OnClickListener() {
                         e.printStackTrace();
                     }
 
-                    list_order.add(new admin_items_order(madon, manguoidung, ngaydathang, tongtien,
+                    list_order.add(new admin_items_order(
+                            madon, manguoidung, ngaydathang, tongtien,
                             trangthai, magiamgia, diachigiaohang, thongtinlienlac));
                 }
             } while (cur.moveToNext());
         }
-        cur.close();
 
+        cur.close();
         adapter.notifyDataSetChanged();
 
-        // Hiển thị thông báo nếu không tìm thấy
         if (list_order.isEmpty()) {
             Toast.makeText(this, "Không tìm thấy đơn hàng phù hợp", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     public void showUpdateStatusDialog(admin_items_order order) {
         final String[] cacTrangThaiDonHang = {
